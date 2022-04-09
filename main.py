@@ -31,7 +31,7 @@ while True:
         pass
 
     user_list = sorted([present[key] for key in present.keys() if not key.startswith("bot:")], key = lambda x: x.lower())
-    bot_list = sorted([present[key] for key in present.keys() if key.startswith("bot:")])
+    bot_list = sorted([present[key] for key in present.keys() if key.startswith("bot:"), key = lambda x: x.lower())
     
     if message.type == "send-event" and message.data.content == "!present":
         users = '\n'.join(user_list)
