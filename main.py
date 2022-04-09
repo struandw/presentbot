@@ -8,7 +8,7 @@ present_bot.stock_responses[
     "long_help"
 ] = "I keep a running, accurate tally of which people are connected. (The tally converges closer to accurate with both time and activity.) Use !present to find out. Made by @PouncySilverkitten."
 
-present_bot.connect(stealth=True)
+present_bot.connect()
 present = {}
 
 user_list = []
@@ -36,10 +36,9 @@ while True:
     if message.type == "send-event" and message.data.content == "!present":
         users = '\n'.join(user_list)
         bots = '\n'.join(bot_list)
-        #present_bot.reply(f"{users}\n\n--------------------\n\n{bots}")
-        print(users)
+        present_bot.reply(f"{users}\n\n--------------------\n\n{bots}")
 
     this_nick = f"Present ({len(user_list)}|{len(bot_list)})"
     if this_nick != last_nick:
-        #present_bot.change_nick(this_nick)
+        present_bot.change_nick(this_nick)
         last_nick = this_nick
