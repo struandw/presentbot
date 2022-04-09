@@ -12,7 +12,7 @@ present_bot.connect()
 present = {}
 
 user_list = []
-bot_list = []
+bot_list = ["Present"]
 last_nick = "Present"
 
 while True:
