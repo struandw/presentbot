@@ -1,5 +1,22 @@
 import karelia
-import pprint
+import sys
+import logging
+
+logger = logging.getLogger(__name__)
+handler = logging.FileHandler('present.log')
+formatter = logging.Formatter('%(asctime)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
+def handle_exception(exc_type, exc_value, exc_traceback):
+    global message
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    
+    logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+
+sys.excepthook = handle_exception
 
 present_bot = karelia.bot(["Present", "present"], "xkcd")
 
@@ -17,7 +34,6 @@ last_nick = "Present"
 
 while True:
     message = present_bot.parse()
-    #pprint.pprint(message.packet)
     try:
         if message.type == "nick-event":
             present[message.data.id] = message.data.to
@@ -33,10 +49,20 @@ while True:
     user_list = sorted([present[key] for key in present.keys() if not key.startswith("bot:")], key = lambda x: x.lower())
     bot_list = sorted([present[key] for key in present.keys() if key.startswith("bot:")], key = lambda x: x.lower())
     
-    if message.type == "send-event" and message.data.content == "!present":
-        users = '\n'.join(user_list)
-        bots = '\n'.join(bot_list)
-        present_bot.reply(f"{users}\n\n--------------------\n\n{bots}")
+    if message.type == "send-event":
+        if message.data.content == "!present":
+            users = '\n'.join(user_list)
+            bots = '\n'.join(bot_list)
+            present_bot.reply(f"{users}\n\n--------------------\n\n{bots}")
+        
+        elif message.data.content.startswith("!present @"):
+            find_presence = message.data.content.split("@")[1].strip()
+            if find_presence.lower() in [user.lower() for user in user_list]:
+                present_bot.reply(f"{find_presence} is present.")
+            else:
+                present_bot.reply(f"{find_presence} is not present.")
+
+    
 
     this_nick = f"Present ({len(user_list)}|{len(bot_list)})"
     if this_nick != last_nick:
