@@ -8,6 +8,13 @@ formatter = logging.Formatter('%(asctime)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
+def with_starts(targets, quarry):
+    for target in targets:
+        if target.lower().startswith(quarry.lower()):
+            return True
+
+    return False
+
 def handle_exception(exc_type, exc_value, exc_traceback):
     global message
     if issubclass(exc_type, KeyboardInterrupt):
@@ -18,7 +25,7 @@ def handle_exception(exc_type, exc_value, exc_traceback):
 
 sys.excepthook = handle_exception
 
-present_bot = karelia.bot(["Present", "present"], "xkcd")
+present_bot = karelia.bot(["Present", "present"], "test")
 
 present_bot.stock_responses["short_help"] = "I track attendence"
 present_bot.stock_responses[
@@ -55,7 +62,9 @@ while True:
             bots = '\n'.join(bot_list)
             present_bot.reply(f"{users}\n\n--------------------\n\n{bots}")
         
-        elif 
+        elif message.data.content.startswith("!present @Present") and not with_starts(user_list, "Present"):
+            present_bot.reply("What's a nice bot like me doing in a place like this?")
+
         elif message.data.content.startswith("!present @"):
             find_presence = message.data.content.split("@")[1].strip()
             if find_presence.lower() in [user.lower() for user in user_list]:
