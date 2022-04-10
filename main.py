@@ -29,7 +29,7 @@ present_bot.connect()
 present = {}
 
 user_list = []
-bot_list = ["Present"]
+bot_list = []
 last_nick = "Present"
 
 while True:
@@ -55,6 +55,7 @@ while True:
             bots = '\n'.join(bot_list)
             present_bot.reply(f"{users}\n\n--------------------\n\n{bots}")
         
+        elif 
         elif message.data.content.startswith("!present @"):
             find_presence = message.data.content.split("@")[1].strip()
             if find_presence.lower() in [user.lower() for user in user_list]:
@@ -64,7 +65,7 @@ while True:
 
     
 
-    this_nick = f"Present ({len(user_list)}|{len(bot_list)})"
+    this_nick = f"Present ({len(user_list)}|{len(bot_list)+1})"
     if this_nick != last_nick:
         present_bot.change_nick(this_nick)
         last_nick = this_nick
