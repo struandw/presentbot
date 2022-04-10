@@ -25,7 +25,7 @@ def handle_exception(exc_type, exc_value, exc_traceback):
 
 sys.excepthook = handle_exception
 
-present_bot = karelia.bot(["Present", "present"], "test")
+present_bot = karelia.bot(["Present", "present"], "xkcd")
 
 present_bot.stock_responses["short_help"] = "I track attendence"
 present_bot.stock_responses[
