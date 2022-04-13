@@ -1,6 +1,7 @@
-import karelia
-import sys
 import logging
+import sys
+
+import karelia
 
 logger = logging.getLogger(__name__)
 handler = logging.FileHandler('present.log')
@@ -27,7 +28,7 @@ sys.excepthook = handle_exception
 
 present_bot = karelia.bot(["Present", "present"], "xkcd")
 
-present_bot.stock_responses["short_help"] = "I track attendence"
+present_bot.stock_responses["short_help"] = "I track attendance"
 present_bot.stock_responses[
     "long_help"
 ] = "I keep a running, accurate tally of which people are connected. (The tally converges closer to accurate with both time and activity.) Use !present to find out. Made by @PouncySilverkitten."
